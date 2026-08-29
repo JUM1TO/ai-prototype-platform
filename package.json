@@ -1,0 +1,13 @@
+{
+  "name": "ai-prototype-platform",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "build": "pnpm -r build",
+    "check": "pnpm -r --sort --workspace-concurrency=1 check",
+    "dev": "pnpm --parallel --filter @platform/api --filter @platform/portal dev",
+    "test": "pnpm -r test"
+  },
+  "engines": { "node": ">=22" }
+}

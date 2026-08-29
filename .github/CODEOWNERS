@@ -1,0 +1,6 @@
+* @platform-team
+/infra/ @platform-team
+/.github/ @platform-team
+/packages/ai-runtime/ @ai-team @platform-team
+/apps/portal/ @frontend-team
+/apps/api/ @backend-team

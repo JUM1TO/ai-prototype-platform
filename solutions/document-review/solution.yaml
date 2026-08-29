@@ -1,0 +1,26 @@
+solution:
+  id: document-review
+  name: Revisión inteligente de documentos
+  version: 0.1.0
+
+branding:
+  title: Document Review Demo
+  primaryColor: "#2563eb"
+
+features:
+  documentUpload: true
+  semanticSearch: false
+  aiAgents: true
+  alerts: false
+  humanApproval: true
+
+services: [portal, api]
+
+ai:
+  provider: mock
+  agent: document-reviewer
+  storePromptContent: false
+
+data:
+  classification: synthetic-only
+  retentionDays: 7
