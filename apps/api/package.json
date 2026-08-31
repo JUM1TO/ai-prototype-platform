@@ -8,13 +8,14 @@
     "check": "tsc -p tsconfig.json --noEmit",
     "dev": "tsx watch src/server.ts",
     "start": "node dist/server.js",
-    "test": "node --test"
+    "test": "tsx --test src/*.test.ts"
   },
   "dependencies": {
     "@fastify/cors": "^11.1.0",
     "@platform/ai-runtime": "workspace:*",
     "@platform/contracts": "workspace:*",
-    "fastify": "^5.5.0"
+    "fastify": "^5.5.0",
+    "yaml": "^2.8.1"
   },
   "devDependencies": {
     "@types/node": "^22.18.0",

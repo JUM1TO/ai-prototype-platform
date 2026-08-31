@@ -26,4 +26,8 @@ pnpm dev
 También se puede ejecutar con `docker compose up --build`. El portal queda en
 `http://localhost:3000` y la API en `http://localhost:8080`.
 
+La variable `SOLUTION_ID` selecciona el manifiesto que se carga desde
+`solutions/<id>/solution.yaml`. La API no inicia si el archivo falta, contiene
+valores inválidos o intenta habilitar una clasificación de datos no permitida.
+
 Consulta [docs/architecture.md](docs/architecture.md) y [CONTRIBUTING.md](CONTRIBUTING.md).

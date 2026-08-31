@@ -2,23 +2,21 @@ import cors from "@fastify/cors";
 import Fastify from "fastify";
 import { AgentRuntime, MockModelProvider } from "@platform/ai-runtime";
 import type { AgentRunRequest, SolutionInfo } from "@platform/contracts";
+import { loadSolutionManifest } from "./manifest.js";
 
 const app = Fastify({ logger: true });
 const runtime = new AgentRuntime(new MockModelProvider());
 
 await app.register(cors, { origin: true });
 
+const solutionId = process.env.SOLUTION_ID ?? "document-review";
+const manifest = await loadSolutionManifest(solutionId, process.env.SOLUTIONS_DIR);
 const solution: SolutionInfo = {
-  id: process.env.SOLUTION_ID ?? "document-review",
-  name: "Revisión inteligente de documentos",
-  version: "0.1.0",
-  features: {
-    documentUpload: true,
-    semanticSearch: false,
-    aiAgents: true,
-    alerts: false,
-    humanApproval: true
-  }
+  id: manifest.solution.id,
+  name: manifest.solution.name,
+  version: manifest.solution.version,
+  branding: manifest.branding,
+  features: manifest.features
 };
 
 app.get("/health", async () => ({ status: "ok" }));

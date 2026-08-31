@@ -13,7 +13,11 @@ function App() {
   useEffect(() => {
     void fetch(`${apiUrl}/api/solution`)
       .then((response) => response.json())
-      .then(setSolution);
+      .then((loaded: SolutionInfo) => {
+        document.documentElement.style.setProperty("--primary", loaded.branding.primaryColor);
+        document.title = loaded.branding.title;
+        setSolution(loaded);
+      });
   }, []);
 
   async function runDemo() {
@@ -34,7 +38,7 @@ function App() {
   return (
     <main>
       <header>
-        <span className="eyebrow">AI Prototype Platform</span>
+        <span className="eyebrow">{solution?.branding.title ?? "AI Prototype Platform"}</span>
         <h1>{solution?.name ?? "Cargando solución…"}</h1>
         <p>Portal modular para demostrar capacidades de IA con datos sintéticos.</p>
       </header>
