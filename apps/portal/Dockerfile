@@ -13,4 +13,5 @@ RUN pnpm --filter @platform/contracts build && pnpm --filter @platform/portal bu
 
 FROM nginx:1.27-alpine
 COPY --from=build /workspace/apps/portal/dist /usr/share/nginx/html
+COPY apps/portal/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80

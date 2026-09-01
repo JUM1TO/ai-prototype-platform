@@ -1,0 +1,5 @@
+bucket              = "ai-prototypes-tfstate"
+namespace           = "YOUR_OBJECT_STORAGE_NAMESPACE"
+key                 = "environments/dev/terraform.tfstate"
+region              = "YOUR_HOME_REGION"
+config_file_profile = "AI_PROTOTYPES"

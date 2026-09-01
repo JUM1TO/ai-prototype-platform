@@ -1,0 +1,9 @@
+# Sustituya Deployers por el grupo del usuario técnico utilizado por GitHub Actions.
+# Cree esta política en el compartimento dedicado a la plataforma.
+Allow group Deployers to manage objects in compartment id <COMPARTMENT_OCID> where target.bucket.name='<ARTIFACT_BUCKET_NAME>'
+Allow group Deployers to manage instance-agent-command-family in compartment id <COMPARTMENT_OCID>
+Allow group Deployers to read instances in compartment id <COMPARTMENT_OCID>
+
+# Terraform necesita administrar los recursos declarados durante bootstrap/apply.
+# Para el primer montaje puede ejecutar Terraform como administrador de la tenancy;
+# después cree una política específica conforme se estabilice el conjunto de recursos.

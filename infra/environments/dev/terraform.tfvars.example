@@ -1,0 +1,5 @@
+tenancy_ocid          = "ocid1.tenancy.oc1..REPLACE_ME"
+compartment_ocid      = "ocid1.compartment.oc1..REPLACE_ME"
+oci_region            = "REPLACE_WITH_HOME_REGION"
+oci_profile           = "AI_PROTOTYPES"
+expires_at            = "YYYY-MM-DD"

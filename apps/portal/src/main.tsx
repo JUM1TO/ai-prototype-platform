@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import type { AgentRunResult, SolutionInfo } from "@platform/contracts";
 import "./styles.css";
 
-const apiUrl = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
+const apiUrl = import.meta.env.VITE_API_URL ?? "";
 
 function App() {
   const [solution, setSolution] = useState<SolutionInfo | null>(null);

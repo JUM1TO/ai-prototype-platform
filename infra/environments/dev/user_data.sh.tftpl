@@ -1,0 +1,74 @@
+#!/bin/bash
+set -euxo pipefail
+
+dnf -y install oraclelinux-developer-release-el9
+dnf -y install container-tools python39-oci-cli
+systemctl enable --now podman-restart.service
+
+install -d -m 0755 /opt/ai-prototype
+
+cat > /etc/sudoers.d/101-oracle-cloud-agent-run-command <<'SUDOERS'
+ocarun ALL=(ALL) NOPASSWD:/opt/ai-prototype/deploy.sh
+SUDOERS
+chmod 0440 /etc/sudoers.d/101-oracle-cloud-agent-run-command
+visudo -cf /etc/sudoers.d/101-oracle-cloud-agent-run-command
+
+cat > /opt/ai-prototype/deploy.sh <<'DEPLOY_SCRIPT'
+#!/bin/bash
+set -euo pipefail
+
+IMAGE_TAG="$${1:-}"
+if [ -z "$IMAGE_TAG" ]; then
+  echo "An immutable image tag is required" >&2
+  exit 2
+fi
+
+DEPLOY_DIR="$(mktemp -d /opt/ai-prototype/deploy.XXXXXX)"
+cleanup() {
+  rm -f "$DEPLOY_DIR/api.oci" "$DEPLOY_DIR/portal.oci"
+  rmdir "$DEPLOY_DIR" >/dev/null 2>&1 || true
+}
+trap cleanup EXIT
+
+oci os object get \
+  --bucket-name '${artifact_bucket}' \
+  --name "deployments/$IMAGE_TAG/api.oci" \
+  --file "$DEPLOY_DIR/api.oci" \
+  --auth instance_principal \
+  --region '${region}'
+
+oci os object get \
+  --bucket-name '${artifact_bucket}' \
+  --name "deployments/$IMAGE_TAG/portal.oci" \
+  --file "$DEPLOY_DIR/portal.oci" \
+  --auth instance_principal \
+  --region '${region}'
+
+podman load --input "$DEPLOY_DIR/api.oci"
+podman load --input "$DEPLOY_DIR/portal.oci"
+
+podman network exists ai-prototype || podman network create ai-prototype
+podman rm -f portal api >/dev/null 2>&1 || true
+
+podman run -d \
+  --name api \
+  --restart=always \
+  --network ai-prototype \
+  --memory 768m \
+  -e NODE_ENV=production \
+  -e PORT=8080 \
+  -e SOLUTION_ID='${solution_id}' \
+  localhost/ai-prototype-api:"$IMAGE_TAG"
+
+podman run -d \
+  --name portal \
+  --restart=always \
+  --network ai-prototype \
+  --memory 192m \
+  -p 80:80 \
+  localhost/ai-prototype-portal:"$IMAGE_TAG"
+
+podman image prune -f --filter "until=168h"
+DEPLOY_SCRIPT
+
+chmod 0755 /opt/ai-prototype/deploy.sh

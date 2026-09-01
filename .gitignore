@@ -1,5 +1,6 @@
 node_modules/
 .pnpm-store/
+.tools/
 dist/
 .turbo/
 *.tsbuildinfo
@@ -15,3 +16,8 @@ terraform.tfstate
 terraform.tfstate.*
 .terraform/
 *.tfplan
+*.tfvars
+*.tfbackend
+backend.hcl
+.oci/
+*.pem

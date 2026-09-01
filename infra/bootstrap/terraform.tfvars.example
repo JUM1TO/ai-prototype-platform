@@ -1,0 +1,4 @@
+compartment_ocid = "ocid1.compartment.oc1..REPLACE_ME"
+oci_region       = "REPLACE_WITH_HOME_REGION"
+oci_profile      = "AI_PROTOTYPES"
+project_name     = "ai-prototypes"
